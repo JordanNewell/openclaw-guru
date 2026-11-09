@@ -1,0 +1,72 @@
+name: freshness-watch
+
+# Machine-enforced freshness: this repo's knowledge is verified against specific
+# OpenClaw releases (see CHANGELOG.md). When npm's latest exceeds the verified
+# window, open/refresh an issue so nobody trusts stale knowledge silently.
+
+on:
+  schedule:
+    - cron: "23 9 * * 1" # Mondays, deliberately off the :00 mark
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Latest published OpenClaw version
+        id: latest
+        run: echo "version=$(npm view openclaw version)" >> "$GITHUB_OUTPUT"
+
+      - name: Verified window from CHANGELOG
+        id: verified
+        run: |
+          # First "Verified against:" line, e.g. "... stable v2026.11.1 ..."
+          v=$(grep -m1 -oP 'stable \*\*\Kv[0-9]+\.[0-9]+\.[0-9]+' CHANGELOG.md || true)
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+
+      - name: Compare and flag staleness
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LATEST: ${{ steps.latest.outputs.version }}
+          VERIFIED: ${{ steps.verified.outputs.version }}
+        run: |
+          echo "latest=$LATEST verified=$VERIFIED"
+          if [ -z "$VERIFIED" ]; then
+            echo "Could not parse verified window from CHANGELOG.md — fix the marker format."
+            exit 1
+          fi
+          if [ "$LATEST" = "$VERIFIED" ]; then
+            echo "Knowledge is current."
+            exit 0
+          fi
+          TITLE="🔴 Knowledge stale: verified through $VERIFIED, latest OpenClaw is $LATEST"
+          BODY=$(cat <<EOF
+          freshness-watch found a gap between this repo's verified window and the
+          published OpenClaw release.
+
+          - **Verified through:** \`$VERIFIED\` (CHANGELOG.md)
+          - **Latest on npm:** \`$LATEST\`
+
+          Version-dependent claims in agents/open-claw-guru.agent.md should not be
+          trusted until the knowledge is re-verified and CHANGELOG.md gains a new
+          entry. Re-verification checklist:
+
+          - [ ] Read release notes for every version after \`$VERIFIED\`
+          - [ ] Update the version-milestones section (history, clearly dated)
+          - [ ] Re-check claims flagged OPERATOR-OBSERVED in VERIFICATION.md
+          - [ ] Bump CHANGELOG.md verified window
+          EOF
+          )
+          # Reuse the open staleness issue if one exists, else create it
+          EXISTING=$(gh issue list --search "Knowledge stale in:title" --state open --json number --jq '.[0].number')
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "$BODY"
+          else
+            gh issue create --title "$TITLE" --body "$BODY" --label documentation
+          fi
