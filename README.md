@@ -1,16 +1,41 @@
 # openclaw-guru
 
+![License](https://img.shields.io/badge/license-MIT-blue) ![verified window](https://img.shields.io/badge/verified%20against-openclaw%20v2026.11.1-brightgreen) ![freshness CI](https://img.shields.io/badge/freshness--watch-weekly%20check-2ea44f)
+
 A Claude Code subagent with **operational depth** on [OpenClaw](https://openclaw.ai) —
 not a docs summary. The knowledge inside comes from running a multi-agent OpenClaw fleet
 in production through major version migrations, state-schema changes, memory incidents,
 and outages. Where the docs say "it should work," this agent knows what actually breaks.
 
+## Install
+
+**Marketplace (recommended):**
 ```
-Install:
-  mkdir -p ~/.claude/agents
-  curl -fsSL https://raw.githubusercontent.com/JordanNewell/openclaw-guru/main/agents/open-claw-guru.agent.md \
-    -o ~/.claude/agents/open-claw-guru.agent.md
+/plugin marketplace add JordanNewell/openclaw-guru
+/plugin install openclaw-guru@openclaw-guru
 ```
+
+**Raw file:**
+```
+mkdir -p ~/.claude/agents
+curl -fsSL https://raw.githubusercontent.com/JordanNewell/openclaw-guru/main/agents/open-claw-guru.agent.md \
+  -o ~/.claude/agents/open-claw-guru.agent.md
+```
+
+Marketplace install keeps the agent under the plugin cache (namespaced, updated by
+version bumps); raw copy puts it in your personal agents dir (updated by re-running
+the curl). Both work; they don't collide.
+
+**Harness compatibility** (the file is standard Claude Code frontmatter with a
+Copilot-friendly `.agent.md` extension):
+
+| Harness | Status |
+|---|---|
+| Claude Code | Native — all documented frontmatter fields used |
+| Cursor 2.4+ | Native — reads `.claude/agents/*.md` (`color` ignored) |
+| GitHub Copilot | Loads (`.agent.md` is Copilot's convention) |
+| Gemini CLI | Copy to `.gemini/agents/` — same markdown+YAML shape |
+| Codex / opencode | Needs conversion (TOML / own format) — not provided yet |
 
 Then ask Claude Code anything OpenClaw — gateway troubleshooting, fleet upgrades,
 channel config, skills mechanics, cron — and it can delegate to the guru. Because

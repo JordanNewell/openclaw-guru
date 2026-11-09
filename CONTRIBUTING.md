@@ -18,6 +18,11 @@ Open an issue using the **Gotcha report** template. A good gotcha has:
 
 ## PR rules
 
+- **Version bumps are mandatory for plugin installs**: Claude Code only updates a
+  marketplace-installed plugin when its version string rises. Any change to
+  `plugins/openclaw-guru/**` must bump `version` in BOTH
+  `plugins/openclaw-guru/.claude-plugin/plugin.json` AND the matching entry in
+  `.claude-plugin/marketplace.json`.
 - Gotchas land in the agent file's **Known Gotchas** section (numbered) + a CHANGELOG entry
 - **Match the file's honesty standard**: observed-once claims say "observed, verify your
   release"; never upgrade a hedge to a mechanism claim without docs evidence
