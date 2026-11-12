@@ -8,6 +8,26 @@ Format per entry: verified window, sources reviewed, what changed in the knowled
 
 ---
 
+## v1.0.1 — 2026-11-12
+
+**Verified against:** release notes reviewed through stable **v2026.11.2** (2026-11-08).
+Single-source pass: the official release page (docs.openclaw.ai/releases/2026.11.2) read
+in full; 11.2 was a patch release (113 PRs, no headline features), so no docs-section
+re-sweep was needed. Beta 2026.11.5 remains in flight, noted as news.
+
+**What changed in the knowledge:**
+- Freshness window bumped v2026.11.1 → **v2026.11.2**; the agent file's pre-flagged
+  "superseded, not yet reviewed" note on 11.1 claims is resolved.
+- Version-milestones: added the **2026.11.2** entry — automations reminder-loss fix
+  (text mentioning heartbeat polls/wakes), update-repair deadlock fix, POSIX triage-hang
+  fixes, paired-node skill-repair behavior, three behavior changes (Chrome-MCP redirect
+  policy, mise/XDG child PATH, plugin API floor ≥2026.11.2), and the post-manual-upgrade
+  `doctor --fix` migration note.
+- VERIFICATION.md operator-observed register: re-checked — **no entry superseded**; gap
+  #4 marked RESOLVED (two doctor hang classes fixed upstream, gotcha #19 hedge retained).
+
+---
+
 ## v1.0.0-draft — 2026-11-08
 
 **Verified against:** release notes reviewed through stable **v2026.11.1** (2026-11-05) plus
