@@ -8,6 +8,41 @@ Format per entry: verified window, sources reviewed, what changed in the knowled
 
 ---
 
+## v1.0.2 — 2026-11-18
+
+**Verified against:** release notes reviewed through stable **v2026.11.5** (2026-11-17).
+Release pages read for 11.3 (34 PRs, full GH body), 11.4 (125 PRs, docs.openclaw.ai formatted
+page — GH body was credits-only), and 11.5 (351 PRs, full GH body + docs page). Docs nav
+confirmed the beta-era promises landed: PostgreSQL operator guide and Knowledge scribes
+sections are live on docs.openclaw.ai.
+
+**What changed in the knowledge:**
+- Freshness window bumped v2026.11.2 → **v2026.11.5**; the "2026.11.5-beta in flight"
+  milestone replaced by stable 2026.11.3 / 11.4 / 11.5 entries.
+- **2026.11.5 BREAKING contract flagged** (#175837): third-party harnesses must register
+  session-keyed active runs in the host `runAttempt` callback; plugin RPC must replace
+  `chatAbortControllers`/`chatQueuedTurns` with authorized Gateway dispatch; `expiresAtMs`
+  → `startDeadlineAtMs`. Any operator running custom harness/plugin code needs this before
+  upgrading.
+- **Update rollback semantic added**: failed Doctor/Gateway startup now rolls back an
+  activated update (11.5) — the "bad update wedges the agent" runbook changes to let the
+  rollback happen first.
+- **Doctor hang status refined**: 11.5 bounds doctor *startup* waits (#187936/#191125),
+  but the Config-repairs capture-op hang (#178359, PR #200820 pending upstream) and the
+  async-stack repair fixes (#190870-75, issue #187900) are verified NOT in 11.4/11.5
+  changelogs — the "don't wait indefinitely" hedge stays fully in force.
+- SQLite playbook parenthetical updated: Postgres data plane now stable-era (docs
+  operator guide live), framed as new opt-in surface, SQLite still the default.
+- 11.3 credential-isolation fix cluster (plugin results scoped to connection creds,
+  inline env cred redaction, no secret inheritance by child processes) noted for
+  multi-provider operators.
+
+**Verification of the parked watch item:** `d894035c` (#190875) checked against both
+CHANGELOG/2026.11.4.md and CHANGELOG/2026.11.5.md upstream — no match; #190870-75/#187900
+remain unreleased as of v2026.11.5.
+
+---
+
 ## v1.0.1 — 2026-11-12
 
 **Verified against:** release notes reviewed through stable **v2026.11.2** (2026-11-08).
