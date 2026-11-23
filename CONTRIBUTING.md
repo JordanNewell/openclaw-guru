@@ -16,6 +16,24 @@ Open an issue using the **Gotcha report** template. A good gotcha has:
 6. **Evidence** — doc URL, release-note link, or minimal repro. "Trust me" gotchas get
    the OPERATOR-OBSERVED label; evidence-backed gotchas can upgrade a claim to DOC-VERIFIED.
 
+## Verifying against a release
+
+Gotcha evidence means running the real thing, not quoting docs. Use the sandbox script —
+it downloads any published version and runs it against a throwaway state dir, so your
+installed OpenClaw is untouched:
+
+```bash
+./scripts/verify-against.sh 2026.11.5 -- doctor        # the usual
+./scripts/verify-against.sh 2026.11.2 -- skills check
+```
+
+Put the version you tested against in your gotcha report. Requires Node (24.x
+recommended). If you need a full gateway environment instead of CLI checks, upstream
+ships a Dockerfile (`openclaw/openclaw`) — heavier, but it exists.
+
+The rules below are enforced by the `content-consistency` CI workflow on every push;
+if a check fails, its error message states the exact fix.
+
 ## PR rules
 
 - **Version bumps are mandatory for plugin installs**: Claude Code only updates a
