@@ -41,6 +41,13 @@ sections are live on docs.openclaw.ai.
 CHANGELOG/2026.11.4.md and CHANGELOG/2026.11.5.md upstream — no match; #190870-75/#187900
 remain unreleased as of v2026.11.5.
 
+**Packaging note (added 2026-11-23):** the v1.0.2 plugin manifests (`plugin.json`,
+`marketplace.json`) were still pinned at `1.0.0` when this entry shipped — marketplace
+installs never received the v2026.11.5 knowledge until the manifests were bumped to
+`1.0.2` on 2026-11-23, and the `plugins/` agent copy had also lagged the canonical
+`agents/` file by one verification window. Both failure modes are now caught by the
+`content-consistency` CI workflow (copy-sync + version-bump guards).
+
 ---
 
 ## v1.0.1 — 2026-11-12

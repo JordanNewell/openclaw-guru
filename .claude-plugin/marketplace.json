@@ -9,7 +9,7 @@
       "name": "openclaw-guru",
       "source": "./plugins/openclaw-guru",
       "description": "OpenClaw expert subagent — gateway troubleshooting, fleet upgrades, channel config, skills mechanics, doctor protocol. Battle-tested, version-tracked knowledge.",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "category": "agents",
       "tags": ["openclaw", "agents", "operations"]
     }
