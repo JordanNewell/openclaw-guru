@@ -1,0 +1,106 @@
+name: content-consistency
+
+# Machine-readable invariants for this knowledge repo. Agent-driven contributors
+# (and the maintainer) hit these checks on every push; each failure message states
+# the exact fix. Rules that used to live only in CONTRIBUTING.md are enforced here:
+#   1. agents/ and plugins/ copies of each agent file must be byte-identical
+#   2. plugin version must rise in BOTH manifests whenever plugins/** content changes
+#   3. the agent file's frontmatter and both manifests must stay parseable
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Copy-sync (agents/ vs plugins/)
+        run: |
+          fail=0
+          for f in agents/*.md; do
+            twin="plugins/openclaw-guru/$f"
+            if [ ! -f "$twin" ]; then
+              echo "::error file=$f::No plugins/ copy of $f. Marketplace users only receive plugins/ — copy it: cp $f $twin"
+              fail=1
+            elif ! cmp -s "$f" "$twin"; then
+              echo "::error file=$f::agents/ and plugins/ copies differ. Marketplace users get the stale one. Fix: cp $f $twin"
+              fail=1
+            fi
+          done
+          exit $fail
+
+      - name: Frontmatter + manifest parse
+        run: |
+          fail=0
+          for f in agents/*.md; do
+            python3 - "$f" <<'PY' || fail=1
+          import sys, yaml
+          path = sys.argv[1]
+          text = open(path, encoding="utf-8").read()
+          if not text.startswith("---"):
+              print(f"::error file={path}::No frontmatter block (file must start with ---)")
+              sys.exit(1)
+          parts = text.split("---", 2)
+          if len(parts) < 3:
+              print(f"::error file={path}::Frontmatter block not closed (missing second ---)")
+              sys.exit(1)
+          try:
+              meta = yaml.safe_load(parts[1])
+          except yaml.YAMLError as e:
+              print(f"::error file={path}::Frontmatter YAML does not parse: {e}")
+              sys.exit(1)
+          for key in ("name", "description"):
+              if not meta.get(key):
+                  print(f"::error file={path}::Frontmatter missing required field: {key}")
+                  sys.exit(1)
+          PY
+          done
+          for j in plugins/openclaw-guru/.claude-plugin/plugin.json .claude-plugin/marketplace.json; do
+            node -e "JSON.parse(require('fs').readFileSync('$j','utf8'))" \
+              || { echo "::error file=$j::Manifest is not valid JSON"; fail=1; }
+          done
+          exit $fail
+
+      - name: Version guard (bump both manifests when plugins/ content changes)
+        run: |
+          PLUGIN_MANIFEST=plugins/openclaw-guru/.claude-plugin/plugin.json
+          MARKETPLACE=.claude-plugin/marketplace.json
+
+          cur=$(node -p "JSON.parse(require('fs').readFileSync('$PLUGIN_MANIFEST','utf8')).version")
+          mkt=$(node -p "
+            const d = JSON.parse(require('fs').readFileSync('$MARKETPLACE','utf8'));
+            (d.plugins.find(p => p.name === 'openclaw-guru') || {}).version || ''")
+          if [ "$cur" != "$mkt" ]; then
+            echo "::error file=$MARKETPLACE::plugin.json version ($cur) != marketplace.json entry version ($mkt). Both must match: CONTRIBUTING.md 'PR rules'."
+            exit 1
+          fi
+          echo "plugin version: $cur (both manifests agree)"
+
+          # Bump check only applies when plugins/** content actually changed
+          BASE="${{ github.event.pull_request.base.sha }}"
+          if [ -z "$BASE" ]; then
+            BASE=$(git rev-parse HEAD~1 2>/dev/null || true)
+          fi
+          if [ -z "$BASE" ]; then
+            echo "Initial commit — skipping bump check."
+            exit 0
+          fi
+          if ! git diff --name-only "$BASE"...HEAD -- plugins/ | grep -q .; then
+            echo "plugins/ unchanged — bump check not applicable."
+            exit 0
+          fi
+
+          prev=$(git show "$BASE:$PLUGIN_MANIFEST" | node -p "JSON.parse(require('fs').readFileSync(0,'utf8')).version")
+          if [ "$cur" = "$prev" ]; then
+            echo "::error file=$PLUGIN_MANIFEST::plugins/ content changed but version stayed at $cur. Marketplace installs only update when the version rises. Bump it in BOTH $PLUGIN_MANIFEST and the marketplace.json entry."
+            exit 1
+          fi
+          echo "version bumped: $prev -> $cur"
