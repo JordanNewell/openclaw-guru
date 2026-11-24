@@ -91,6 +91,11 @@ Your battle scars are the most valuable contribution — see
 [CONTRIBUTING.md](CONTRIBUTING.md) and the **Gotcha report** issue template. Evidence-backed
 gotchas upgrade claims from OPERATOR-OBSERVED to DOC-VERIFIED.
 
+**Languages:** the knowledge is written in English, but the guru answers in whatever
+language you're conversing in — no translation needed to use it. README translations are
+welcome (mark them "community translation — English is canonical"); the knowledge files
+themselves stay English-only so every re-verification updates one source of truth.
+
 ## License
 
 [MIT](LICENSE). Not affiliated with or endorsed by the OpenClaw project or the OpenClaw
