@@ -8,6 +8,32 @@ Format per entry: verified window, sources reviewed, what changed in the knowled
 
 ---
 
+## v1.0.4 — 2026-11-23
+
+**Verified against:** release notes reviewed through stable **v2026.11.7** (2026-11-23).
+Full changelog markdown read for 11.6 (386 PRs) and 11.7 (533 PRs) via
+CHANGELOG/2026.11.6.md + CHANGELOG/2026.11.7.md upstream (GH release bodies were
+credits/verification metadata only for 11.6).
+
+**What changed in the knowledge:**
+- Freshness window bumped v2026.11.5 → **v2026.11.7**; new Version-Milestones entries
+  for 2026.11.6 and 2026.11.7 (both patch releases, no fundamentals changed — this
+  window was an operator-behavior pass: log-path move, slash-commands-at-start,
+  Discord/Slack per-person turn separation, realtime 30s silence hangup, browser
+  skill sign-in-prompt change, scheduled-job permission semantics).
+- **2026.11.6 flagged for updaters**: dead update leases clear in repair; updater
+  compatibility records (recovery bridges) make the "installed updater must already
+  contain this fix" pattern explicit — very old fleets may need a manual
+  package-manager update as the bridge.
+- **Route-collapse fix noted** (#193179): Doctor/update migrations no longer merge
+  intentionally separate API vs Claude/Gemini CLI routes; operators already collapsed
+  by a prior migration must restore a backup or re-add the fallback.
+- **Gotcha #19 (Doctor can HANG) re-verified**: #178359/#190870-75/#187900 checked
+  against BOTH new changelogs — still unreleased as of v2026.11.7; hedge stands.
+- VERIFICATION.md operator-observed register re-checked — no entry superseded
+  (cooldown ladder, mixed-version playbook, Windows patterns all unchanged by
+  these releases; 11.6/11.7 strengthen the update-reliability story).
+
 ## v1.0.2 — 2026-11-18
 
 **Verified against:** release notes reviewed through stable **v2026.11.5** (2026-11-17).
