@@ -47,6 +47,17 @@ channel config, skills mechanics, cron — and it can delegate to the guru. Beca
 subagents have shell access, the guru can run `openclaw doctor`, `openclaw skills check`,
 and log greps on your machine directly — applying its protocol to real output.
 
+## Running an OpenClaw gateway instead? (skill variant)
+
+The same knowledge ships as an **OpenClaw-native skill** — `openclaw-guru-skill/SKILL.md` —
+so your gateway bots can answer OpenClaw operations questions with the same depth. Load it
+like any workspace skill: copy the `openclaw-guru-skill/` directory into the bot's
+`workspace/skills/` (or your fleet's skill-install flow).
+
+The skill body is the agent file's knowledge **verbatim** — one source of truth, three
+packages (agent file, marketplace plugin, skill). CI enforces the sync; every re-verified
+window lands in all three at once.
+
 ## Who this is for
 
 | If you are… | Start here |
