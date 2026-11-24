@@ -1,5 +1,10 @@
 <img src="assets/readme-header.svg" alt="openclaw-guru — battle scars, not docs summaries" width="640">
 
+**The product is one file.** Install it and you get `open-claw-guru.agent.md` — operational
+OpenClaw knowledge, nothing else. Everything else in this repo is scaffolding that keeps that
+file honest: freshness CI, the gated window-bump script, copy-sync checks, brand assets.
+Contribute knowledge to the file, discipline to the scaffolding — they never mix (enforced by CI).
+
 ![License](https://img.shields.io/badge/license-MIT-blue) ![verified window](https://img.shields.io/badge/verified%20against-openclaw%20v2026.11.5-brightgreen) ![freshness CI](https://img.shields.io/badge/freshness--watch-weekly%20check-2ea44f)
 
 A Claude Code subagent with **operational depth** on [OpenClaw](https://openclaw.ai) —
