@@ -69,6 +69,19 @@ jobs:
           done
           exit $fail
 
+      - name: Payload purity (plugins/ stays knowledge-only)
+        run: |
+          ALLOWED="plugins/openclaw-guru/agents/open-claw-guru.agent.md plugins/openclaw-guru/.claude-plugin/plugin.json"
+          fail=0
+          while IFS= read -r f; do
+            case " $ALLOWED " in
+              *" $f "*) ;;
+              *) echo "::error file=$f::plugins/ carries the installed product only (one agent file + one manifest). '$f' is scaffolding — it ships to every marketplace user. Move it to the repo root (scripts/, assets/, .github/, .claude/)."
+                 fail=1 ;;
+            esac
+          done < <(find plugins -type f | sort)
+          exit $fail
+
       - name: Version guard (bump both manifests when plugins/ content changes)
         run: |
           PLUGIN_MANIFEST=plugins/openclaw-guru/.claude-plugin/plugin.json
