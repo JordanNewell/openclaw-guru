@@ -2,7 +2,7 @@
   "name": "openclaw-guru",
   "owner": { "name": "Jordan Newell", "url": "https://jordannewell.com" },
   "$schema": "https://code.claude.com/docs/en/plugins/marketplace-reference",
-  "description": "Operational-depth OpenClaw expertise as a Claude Code subagent.",
+  "description": "Operational-depth OpenClaw expertise as a subagent (Claude Code, Cursor, Copilot, Gemini CLI) plus an OpenClaw-native skill for gateway bots.",
   "version": "1.0.0",
   "plugins": [
     {

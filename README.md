@@ -7,10 +7,12 @@ Contribute knowledge to the file, discipline to the scaffolding — they never m
 
 ![License](https://img.shields.io/badge/license-MIT-blue) ![verified window](https://img.shields.io/badge/verified%20against-openclaw%20v2026.11.7-brightgreen) ![freshness CI](https://img.shields.io/badge/freshness--watch-weekly%20check-2ea44f)
 
-A Claude Code subagent with **operational depth** on [OpenClaw](https://openclaw.ai) —
-not a docs summary. The knowledge inside comes from running a multi-agent OpenClaw fleet
-in production through major version migrations, state-schema changes, memory incidents,
-and outages. Where the docs say "it should work," this agent knows what actually breaks.
+An OpenClaw expert you can install — a **subagent** for Claude Code, Cursor 2.4+, GitHub
+Copilot, and Gemini CLI, or an **OpenClaw-native skill** your gateway bots can load — with
+**operational depth** on [OpenClaw](https://openclaw.ai). Not a docs summary. The knowledge
+inside comes from running a multi-agent OpenClaw fleet in production through major version
+migrations, state-schema changes, memory incidents, and outages. Where the docs say "it
+should work," this agent knows what actually breaks.
 
 ## Install
 
