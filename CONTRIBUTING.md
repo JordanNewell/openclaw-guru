@@ -60,6 +60,13 @@ if a check fails, its error message states the exact fix.
 ## Maintenance posture
 
 Verified-window tracking lives in [CHANGELOG.md](CHANGELOG.md); the freshness-watch CI
-opens an issue when the verified window falls behind the latest OpenClaw release. If this
+opens an issue when the verified window falls behind the latest OpenClaw release.
+
+**Re-verifying:** read the release notes after the current window, update the
+milestones/gotchas in the agent file, then run
+`./scripts/bump-window.sh <version> --verified` to move the window across every
+mechanical spot (CHANGELOG marker, badge, header line, plugins/ copy, manifests,
+assets). The script refuses without `--verified` — a bump without the review makes
+freshness-watch lie. Claude Code users can run `/reverify` for the guided flow. If this
 repo goes unmaintained, it will be archived with a banner rather than left to silently
 mislead — check the repo's archived status before trusting version claims.
