@@ -1,8 +1,8 @@
 {
   "name": "openclaw-guru",
   "displayName": "OpenClaw Guru",
-  "version": "1.0.4",
-  "description": "OpenClaw expert subagent with operational-depth knowledge, verified-window freshness discipline, and a doctor side-by-side protocol.",
+  "version": "1.0.5",
+  "description": "Operational-depth OpenClaw expertise, battle-tested and version-tracked. Ships as a subagent (Claude Code, Cursor, Copilot, Gemini CLI) plus an OpenClaw-native skill so gateway bots can load the same knowledge.",
   "author": { "name": "Jordan Newell", "url": "https://jordannewell.com" },
   "homepage": "https://github.com/JordanNewell/openclaw-guru",
   "repository": "https://github.com/JordanNewell/openclaw-guru",

@@ -81,6 +81,9 @@ sed -i -E "s/verified%20against-openclaw%20v[0-9]+\.[0-9]+\.[0-9]+/verified%20ag
 # 3. agents/ header line (date + window)
 sed -i -E "s/release-note review ran [0-9]{4}-[0-9]{2}-[0-9]{2} and covers through stable v[0-9]+\.[0-9]+\.[0-9]+/release-note review ran $TODAY and covers through stable $NEW_WIN/" agents/open-claw-guru.agent.md
 
+# 3b. plugin-folder README (directory listing body) — window + review date
+sed -i -E "s/Current window: \*\*v[0-9]+\.[0-9]+\.[0-9]+\*\* \([0-9]{4}-[0-9]{2}-[0-9]{2} review\)/Current window: **$NEW_WIN** ($TODAY review)/" plugins/openclaw-guru/README.md
+
 # 4. re-sync the marketplace copy (copy-sync CI demands byte-identical)
 cp agents/open-claw-guru.agent.md plugins/openclaw-guru/agents/open-claw-guru.agent.md
 
