@@ -71,7 +71,7 @@ jobs:
 
       - name: Payload purity (plugins/ stays knowledge-only)
         run: |
-          ALLOWED="plugins/openclaw-guru/agents/open-claw-guru.agent.md plugins/openclaw-guru/.claude-plugin/plugin.json"
+          ALLOWED="plugins/openclaw-guru/agents/open-claw-guru.agent.md plugins/openclaw-guru/.claude-plugin/plugin.json plugins/openclaw-guru/README.md"
           fail=0
           while IFS= read -r f; do
             case " $ALLOWED " in
