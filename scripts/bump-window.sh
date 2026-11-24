@@ -84,6 +84,9 @@ sed -i -E "s/release-note review ran [0-9]{4}-[0-9]{2}-[0-9]{2} and covers throu
 # 4. re-sync the marketplace copy (copy-sync CI demands byte-identical)
 cp agents/open-claw-guru.agent.md plugins/openclaw-guru/agents/open-claw-guru.agent.md
 
+# 4b. re-sync the OpenClaw-native skill body (skill-body-sync CI demands identical bodies)
+python3 scripts/sync-skill.py
+
 # 5. patch-bump both manifests
 python3 - <<'PY'
 import json, re

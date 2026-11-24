@@ -69,6 +69,25 @@ jobs:
           done
           exit $fail
 
+      - name: Skill body sync (v2 knowledge copy)
+        run: |
+          python3 - <<'PY' || exit 1
+          import re, sys
+          def body(path):
+              s = open(path, encoding="utf-8").read()
+              m = re.match(r"^---\n.*?\n---\n", s, re.DOTALL)
+              if not m:
+                  print(f"::error file={path}::No frontmatter block")
+                  sys.exit(1)
+              return s[m.end():].lstrip("\n")
+          canon = body("agents/open-claw-guru.agent.md")
+          skill = body("openclaw-guru-skill/SKILL.md")
+          if canon != skill:
+              print("::error file=openclaw-guru-skill/SKILL.md::Skill knowledge body drifted from agents/. Fix: python3 scripts/sync-skill.py")
+              sys.exit(1)
+          print("skill body identical to canonical knowledge")
+          PY
+
       - name: Payload purity (plugins/ stays knowledge-only)
         run: |
           ALLOWED="plugins/openclaw-guru/agents/open-claw-guru.agent.md plugins/openclaw-guru/.claude-plugin/plugin.json plugins/openclaw-guru/README.md"
