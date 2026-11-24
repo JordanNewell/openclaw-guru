@@ -1,7 +1,7 @@
 {
   "name": "openclaw-guru",
   "displayName": "OpenClaw Guru",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "OpenClaw expert subagent with operational-depth knowledge, verified-window freshness discipline, and a doctor side-by-side protocol.",
   "author": { "name": "Jordan Newell", "url": "https://jordannewell.com" },
   "homepage": "https://github.com/JordanNewell/openclaw-guru",
